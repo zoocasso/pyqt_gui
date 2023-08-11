@@ -1,5 +1,5 @@
 import sys 
-import PyQt5.QtWidgets as pyqt5
+import PyQt6.QtWidgets as pyqt6
 import finplot as fplt
 import pandas as pd
 
@@ -7,21 +7,21 @@ fplt.candle_bull_color = "#FF0000"
 fplt.candle_bull_body_color = "#FF0000"
 fplt.candle_bear_color = "#0000FF"
 
-class MyWindow(pyqt5.QMainWindow):
+class MyWindow(pyqt6.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setGeometry(600, 300, 800, 600)
         
-        table_widget = pyqt5.QTableWidget()
+        table_widget = pyqt6.QTableWidget()
 
-        button_load = pyqt5.QPushButton("load")
+        button_load = pyqt6.QPushButton("load")
         button_load.clicked.connect(lambda state, widget = table_widget: self.slot_button_load(state, widget))
 
-        button_save = pyqt5.QPushButton("Save")
+        button_save = pyqt6.QPushButton("Save")
         button_save.clicked.connect(lambda state, widget = table_widget: self.slot_button_save(state, widget))
 
-        widget= pyqt5.QGraphicsView()
-        layout = pyqt5.QVBoxLayout(widget)
+        widget= pyqt6.QGraphicsView()
+        layout = pyqt6.QVBoxLayout(widget)
         self.setCentralWidget(widget)
 
         self.ax = fplt.create_plot(init_zoom_periods=50)
@@ -58,12 +58,12 @@ class MyWindow(pyqt5.QMainWindow):
             for col_index, column in enumerate(df.columns):
                 value = df.loc[row][column]
                 
-                item = pyqt5.QTableWidgetItem(str(value))
+                item = pyqt6.QTableWidgetItem(str(value))
                 
                 widget.setItem(row_index, col_index, item)
 
     def slot_button_load(self, state, widget):
-        filename = pyqt5.QFileDialog.getOpenFileName(self, '', './','csv(*.csv)')
+        filename = pyqt6.QFileDialog.getOpenFileName(self, '', './','csv(*.csv)')
 
         if filename[0]:
             df = pd.read_csv(filename[0], index_col = 0)
@@ -73,7 +73,7 @@ class MyWindow(pyqt5.QMainWindow):
             self.create_table_widget(widget, calc_df)
 
     def slot_button_save(self, state, widget):
-        filename = pyqt5.QFileDialog.getSaveFileName(self, '', './','csv(*.csv)')
+        filename = pyqt6.QFileDialog.getSaveFileName(self, '', './','csv(*.csv)')
 
         if filename[0]:
             row_list = list()
@@ -99,7 +99,7 @@ class MyWindow(pyqt5.QMainWindow):
 
 
 if __name__ == "__main__":
-    app = pyqt5.QApplication(sys.argv)
+    app = pyqt6.QApplication(sys.argv)
     window = MyWindow()
     window.show()
-    app.exec_()
+    app.exec()
